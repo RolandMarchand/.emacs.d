@@ -65,7 +65,7 @@
  '(org-hide-leading-stars t)
  '(org-support-shift-select nil)
  '(package-selected-packages
-   '(vala-mode lsp-mode magit janet-mode paredit-everywhere focus flymake markdown-mode vterm paredit darkroom olivetti slime ivy doom-themes doom-modeline))
+   '(lsp-ivy rust-mode vala-mode lsp-mode magit janet-mode paredit-everywhere focus flymake markdown-mode vterm paredit darkroom olivetti slime ivy doom-themes doom-modeline))
  '(prog-mode-hook '(flyspell-prog-mode flymake-mode paredit-everywhere-mode))
  '(rcirc-server-alist '(("irc.libera.chat" :nick "spowmtom")))
  '(scroll-bar-mode nil)
