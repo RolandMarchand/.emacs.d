@@ -54,3 +54,7 @@ flycheck_*.el
 /recentf
 
 /bookmarks
+
+# lsp
+/.cache
+/.lsp*
