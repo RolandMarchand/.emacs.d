@@ -50,8 +50,12 @@
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "linux")))
- '(c-mode-common-hook '(c-toggle-auto-hungry-state subword-mode))
+ '(c-mode-common-hook '(c-toggle-auto-hungry-state subword-mode lsp))
  '(column-number-mode t)
+ '(company-backends
+   '(company-bbdb company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+		  (company-dabbrev-code company-gtags company-etags company-keywords)
+		  company-oddmuse company-dabbrev company-omnisharp))
  '(custom-enabled-themes '(doom-gruvbox))
  '(custom-safe-themes
    '("7eea50883f10e5c6ad6f81e153c640b3a288cd8dc1d26e4696f7d40f754cc703" default))
@@ -62,12 +66,16 @@
  '(ivy-mode t)
  '(ivy-use-virtual-buffers t)
  '(ivy-wrap t)
+ '(lsp-enable-snippet nil)
  '(org-hide-leading-stars t)
  '(org-support-shift-select nil)
  '(package-selected-packages
-   '(gdscript-mode renpy lsp-ivy rust-mode vala-mode lsp-mode magit janet-mode paredit-everywhere focus flymake markdown-mode vterm paredit darkroom olivetti slime ivy doom-themes doom-modeline))
- '(prog-mode-hook '(flyspell-prog-mode flymake-mode paredit-everywhere-mode))
+   '(omnisharp csharp-mode cmake-mode company-shell company gdscript-mode renpy lsp-ivy rust-mode vala-mode lsp-mode magit janet-mode paredit-everywhere focus flymake markdown-mode vterm paredit darkroom olivetti slime ivy doom-themes doom-modeline))
+ '(prog-mode-hook
+   '(flyspell-prog-mode flymake-mode paredit-everywhere-mode company-mode))
  '(rcirc-server-alist '(("irc.libera.chat" :nick "spowmtom")))
+ '(rmail-movemail-program
+   "/usr/local/libexec/emacs/28.0.50/x86_64-pc-linux-gnu/movemail")
  '(scroll-bar-mode nil)
  '(sentence-end "\\. +")
  '(size-indication-mode t)
@@ -107,7 +115,7 @@
   "Kills the emacs server."
   (interactive)
   (if (y-or-n-p "Kill Emacs ? ")
-    (save-buffers-kill-emacs)))
+      (save-buffers-kill-terminal)))
 
 (defun create-scratch-buffer ()
   "Create a new *scratch* buffer."
@@ -171,6 +179,7 @@ ARG defaults to 1."
 (global-set-key (kbd "C-x C-c") 'kill-dialogue)
 
 ;;; Hooks
+(add-hook 'csharp-mode-hook 'lsp)
 
 (provide 'init.el)
 ;;; init.el ends here
