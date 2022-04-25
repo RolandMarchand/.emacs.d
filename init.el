@@ -43,6 +43,8 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms '((".*" "/tmp/" t)))
  '(backup-directory-alist '((".*" . "/tmp/")))
+ '(byte-compile-verbose nil)
+ '(byte-compile-warnings '(cl-functions))
  '(c-default-style
    '((c-mode . "linux")
      (c++-mode . "linux")
@@ -50,7 +52,12 @@
      (java-mode . "java")
      (awk-mode . "awk")
      (other . "linux")))
- '(c-mode-common-hook '(c-toggle-auto-hungry-state subword-mode lsp))
+ '(c-mode-common-hook
+   '(c-toggle-auto-hungry-state subword-mode lsp c-toggle-auto-newline
+				(lambda nil
+				  (local-set-key
+				   (kbd "C-c M-d")
+				   'gdb))))
  '(column-number-mode t)
  '(company-backends
    '(company-bbdb company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
@@ -61,21 +68,29 @@
    '("7eea50883f10e5c6ad6f81e153c640b3a288cd8dc1d26e4696f7d40f754cc703" default))
  '(display-line-numbers 'visual)
  '(doom-modeline-mode t)
+ '(ede-project-directories '("/home/roland/Programming/Test"))
  '(initial-buffer-choice t)
+ '(initial-major-mode 'fundamental-mode)
+ '(initial-scratch-message nil)
  '(ivy-count-format "(%d/%d) ")
  '(ivy-mode t)
  '(ivy-use-virtual-buffers t)
  '(ivy-wrap t)
+ '(lsp-completion-enable nil)
+ '(lsp-completion-provider :none)
+ '(lsp-enable-on-type-formatting nil)
  '(lsp-enable-snippet nil)
  '(org-hide-leading-stars t)
  '(org-support-shift-select nil)
  '(package-selected-packages
    '(omnisharp csharp-mode cmake-mode company-shell company gdscript-mode renpy lsp-ivy rust-mode vala-mode lsp-mode magit janet-mode paredit-everywhere focus flymake markdown-mode vterm paredit darkroom olivetti slime ivy doom-themes doom-modeline))
  '(prog-mode-hook
-   '(flyspell-prog-mode flymake-mode paredit-everywhere-mode company-mode))
+   '(flyspell-prog-mode flymake-mode paredit-everywhere-mode company-mode
+			(lambda nil
+			  (local-set-key
+			   (kbd "C-c M-c")
+			   'compile))))
  '(rcirc-server-alist '(("irc.libera.chat" :nick "spowmtom")))
- '(rmail-movemail-program
-   "/usr/local/libexec/emacs/28.0.50/x86_64-pc-linux-gnu/movemail")
  '(scroll-bar-mode nil)
  '(sentence-end "\\. +")
  '(size-indication-mode t)
@@ -90,7 +105,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 120 :width normal)))))
+ '(default ((t (:family "Comic Code Ligatures" :foundry "TAB " :slant normal :weight semi-bold :height 128 :width normal)))))
 
 ;; Convenience
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -112,18 +127,20 @@
 ;;; Functions
 
 (defun kill-dialogue ()
-  "Kills the emacs server."
+  "Kills the current emacs terminal."
   (interactive)
-  (if (y-or-n-p "Kill Emacs ? ")
+  (if (y-or-n-p "Kill terminal ? ")
       (save-buffers-kill-terminal)))
 
 (defun create-scratch-buffer ()
   "Create a new *scratch* buffer."
   (interactive)
   (switch-to-buffer-other-window "*scratch*")
-  (insert initial-scratch-message)
+  (if initial-scratch-message
+      (insert initial-scratch-message))
   (goto-char (point-max))
-  (initial-major-mode))
+  (if initial-major-mode
+      (initial-major-mode)))
 
 (defun duplicate-char (&optional arg)
   "Duplicates the character on which the point is.
@@ -179,7 +196,7 @@ ARG defaults to 1."
 (global-set-key (kbd "C-x C-c") 'kill-dialogue)
 
 ;;; Hooks
-(add-hook 'csharp-mode-hook 'lsp)
+; (add-hook 'csharp-mode-hook 'lsp)
 
 (provide 'init.el)
 ;;; init.el ends here
