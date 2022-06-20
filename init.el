@@ -34,13 +34,11 @@
 
 ;;; Code:
 
-;;; Variables
-
 (defvar home-dir (substring (shell-command-to-string "echo $HOME") 0 -1)
   "String of the home directory's absolute path.")
 
 (defvar clang-cflags '("-Wall" "--std=c11"))
-(defvar clang-include-directories (mapcar (lambda (dir) (concat home-dir dir)) '("/Programming/c")))
+(defvar clang-include-directories (mapcar (lambda (dir) (concat home-dir dir)) '("/Programming/c/moolang")))
 (defvar clang-pkg-config-cflags '("gtk4")
   "Used in CLANG-PKG-CONFIG to generate compile flags.")
 
