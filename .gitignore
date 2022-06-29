@@ -16,8 +16,7 @@ tramp
 *_flymake.*
 
 # eshell files
-/eshell/history
-/eshell/lastdir
+/eshell
 
 # elpa packages
 # /elpa/
@@ -58,3 +57,7 @@ flycheck_*.el
 # lsp
 /.cache
 /.lsp*
+
+# Misc
+/viper
+/games
