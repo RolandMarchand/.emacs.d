@@ -59,7 +59,8 @@
 				  (local-set-key
 				   (kbd "C-c M-d")
 				   'gdb))))
- '(c-mode-hook '(macrostep-c-mode-hook lsp flycheck-mode) t)
+ '(c-mode-hook
+   '(macrostep-c-mode-hook lsp flycheck-mode company-mode projectile-mode))
  '(column-number-mode t)
  '(company-backends
    '(company-bbdb company-semantic company-clang company-cmake company-capf company-files
@@ -82,10 +83,11 @@
  '(ivy-mode t)
  '(ivy-use-virtual-buffers t)
  '(ivy-wrap t)
+ '(lsp-auto-guess-root nil)
  '(org-hide-leading-stars t)
  '(org-support-shift-select nil)
  '(package-selected-packages
-   '(lsp-mode eshell-vterm cmake-mode rust-mode magit markdown-mode paredit slime ivy doom-themes doom-modeline))
+   '(yaml-mode lsp-ivy lsp-mode eshell-vterm cmake-mode rust-mode magit markdown-mode paredit slime ivy doom-themes doom-modeline))
  '(prog-mode-hook '((lambda nil (local-set-key (kbd "C-c M-c") 'compile))))
  '(rcirc-server-alist '(("irc.libera.chat" :nick "spowmtom")))
  '(recentf-mode t)
