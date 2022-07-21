@@ -46,6 +46,7 @@
  '(backup-directory-alist '((".*" . "/tmp/")))
  '(byte-compile-verbose nil)
  '(byte-compile-warnings '(cl-functions))
+ '(c++-mode-hook '(lsp flycheck-mode company-mode))
  '(c-default-style
    '((c-mode . "linux")
      (c++-mode . "linux")
@@ -59,13 +60,12 @@
 				  (local-set-key
 				   (kbd "C-c M-d")
 				   'gdb))))
- '(c-mode-hook
-   '(macrostep-c-mode-hook lsp flycheck-mode company-mode projectile-mode))
+ '(c-mode-hook '(macrostep-c-mode-hook lsp flycheck-mode company-mode))
  '(column-number-mode t)
  '(company-backends
    '(company-bbdb company-semantic company-clang company-cmake company-capf company-files
 		  (company-dabbrev-code company-gtags company-etags company-keywords)
-		  company-oddmuse company-dabbrev company-irony-c-headers company-irony))
+		  company-oddmuse company-dabbrev))
  '(compile-command "make")
  '(custom-enabled-themes '(red))
  '(custom-safe-themes
@@ -138,7 +138,7 @@
       (insert initial-scratch-message))
   (goto-char (point-max))
   (if initial-major-mode
-      (initial-major-mode)))
+      (funcall initial-major-mode)))
 
 (defun insert-lambda (&optional arg)
   "Insert the lambda (λ) character.
@@ -160,9 +160,6 @@ ARG defaults to 1."
 (global-set-key (kbd "C-x C-l") 'insert-lambda)
 (global-set-key (kbd "C-u") 'kill-to-line-beginning-position)
 (global-set-key (kbd "C-x C-c") 'kill-dialogue)
-
-;; Hooks
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 (provide 'init.el)
 ;;; init.el ends here
