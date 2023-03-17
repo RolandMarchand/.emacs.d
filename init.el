@@ -1,13 +1,14 @@
-;;; init.el --- Tohan Marchand's Emacs config  -*- lexical-binding: t -*-
+;;; init.el --- Roland Marchand's Emacs config  -*- lexical-binding: t -*-
 
-;; Maintainer:		Tohan Marchand <tohan.marchand@protonmail.com>
+;; Maintainer:		Roland Marchand <roland.marchand@protonmail.com>
 ;; Created: 		2021 12th of April
 ;; Keywords: 		init.el .emacs config
-;; Version: 		20210818.1
+;; Version: 		20220823.1
 
 ;;;; License and Commentary
 
-;;     Copyright (C) 2021 Tohan Marchand <tohan.marchand@protonmail.com>
+;;     Copyright (C) 2021 2022
+;;     Roland Marchand <roland.marchand@protonmail.com>
 ;;
 ;;     This program is free software; you can redistribute it and/or
 ;;     modify it under the terms of the GNU General Public License as
@@ -47,13 +48,46 @@
  '(byte-compile-verbose nil)
  '(byte-compile-warnings '(cl-functions))
  '(c++-mode-hook '(lsp flycheck-mode company-mode))
+ '(c-backslash-column 48)
+ '(c-backslash-max-column 80)
+ '(c-basic-offset 8)
+ '(c-block-comment-prefix "* ")
+ '(c-cleanup-list
+   '(brace-else-brace brace-elseif-brace brace-catch-brace empty-defun-braces defun-close-semi list-close-comma scope-operator compact-empty-funcall))
+ '(c-comment-only-line-offset 'set-from-style)
  '(c-default-style
-   '((c-mode . "linux")
-     (c++-mode . "linux")
-     (objc-mode . "linux")
+   '((c-mode . "user")
+     (c++-mode . "user")
      (java-mode . "java")
-     (awk-mode . "awk")
-     (other . "linux")))
+     (other . "user")))
+ '(c-doc-comment-style
+   '((c-mode . gtkdoc)
+     (c++-mode . gtkdoc)
+     (java-mode . javadoc)
+     (pike-mode . autodoc)))
+ '(c-hanging-braces-alist
+   '((defun-open before after)
+     (defun-close before after)
+     (block-close . c-snug-do-while)
+     (statement-cont)
+     (substatement-open after)
+     (brace-list-open)
+     (brace-list-close)
+     (brace-list-intro)
+     (brace-entry-open)
+     (extern-lang-open after)
+     (namespace-open after)
+     (module-open after)
+     (composition-open after)
+     (inexpr-class-open after)
+     (inexpr-class-close before)
+     (arglist-cont-nonempty)))
+ '(c-indent-comment-alist
+   '((empty-line column)
+     (anchored-comment column . 0)
+     (end-block space . 1)
+     (cpp-end-block space . 2)
+     (other column)))
  '(c-mode-common-hook
    '(c-toggle-auto-hungry-state subword-mode c-toggle-auto-newline
 				(lambda nil
@@ -84,10 +118,13 @@
  '(ivy-use-virtual-buffers t)
  '(ivy-wrap t)
  '(lsp-auto-guess-root nil)
+ '(lsp-enable-snippet nil)
+ '(lua-mode-hook '(flycheck-mode))
+ '(lua-prefix-key "C-c")
  '(org-hide-leading-stars t)
  '(org-support-shift-select nil)
  '(package-selected-packages
-   '(yaml-mode lsp-ivy lsp-mode eshell-vterm cmake-mode rust-mode magit markdown-mode paredit slime ivy doom-themes doom-modeline))
+   '(fsharp-mode gdscript-mode vala-mode lua-mode multiple-cursors csharp-mode yaml-mode lsp-ivy lsp-mode eshell-vterm cmake-mode rust-mode magit markdown-mode paredit slime ivy doom-themes doom-modeline))
  '(prog-mode-hook '((lambda nil (local-set-key (kbd "C-c M-c") 'compile))))
  '(rcirc-server-alist '(("irc.libera.chat" :nick "spowmtom")))
  '(recentf-mode t)
@@ -96,9 +133,11 @@
  '(size-indication-mode t)
  '(small-temporary-file-directory "/tmp/")
  '(standard-indent 8)
+ '(tab-width 8)
  '(tool-bar-mode nil)
  '(user-full-name "Tohan Marchand")
  '(user-mail-address "tohan.marchand@protonmail.com")
+ '(vala-mode-hook nil)
  '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -154,12 +193,37 @@ ARG defaults to 1."
   (dotimes (i (cond (arg arg) 1))
     (kill-region (line-beginning-position) (point))))
 
+(defun move-line-up (arg)
+  "Drag current line to previous line, keeping point on current line.
+With argument ARG, takes current line and moves it past ARG lines."
+  (interactive "*p")
+  (let ((original-column (current-column)))
+    (dotimes (i arg)
+      (transpose-lines 1)
+      (previous-line 2)
+      (move-to-column original-column))))
+
+(defun move-line-down (arg)
+  "Drag current line to next line, keeping point on current line.
+With argument ARG, takes current line and moves it past ARG lines."
+  (interactive "*p")
+  (let ((original-column (current-column)))
+    (dotimes (i arg)
+      (next-line)
+      (transpose-lines 1)
+      (previous-line 1)
+      (move-to-column original-column))))
+
 ;; Bindings
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "M-s i") 'imenu)
 (global-set-key (kbd "C-x C-l") 'insert-lambda)
 (global-set-key (kbd "C-u") 'kill-to-line-beginning-position)
 (global-set-key (kbd "C-x C-c") 'kill-dialogue)
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-<down>") 'move-line-down)
+(global-set-key (kbd "M-p") 'move-line-up)
+(global-set-key (kbd "M-n") 'move-line-down)
 
 (provide 'init.el)
 ;;; init.el ends here
