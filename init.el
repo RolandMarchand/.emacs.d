@@ -179,19 +179,32 @@
   (if initial-major-mode
       (funcall initial-major-mode)))
 
-(defun insert-lambda (&optional arg)
+(defun insert-lambda (arg)
   "Insert the lambda (λ) character.
 ARG defaults to 1."
-  (interactive "p")
-  (dotimes (i (cond (arg arg) 1))
+  (interactive "*p")
+  (dotimes (i arg)
     (insert "λ")))
+
+(defun insert-left-guillemet (arg)
+  "Insert the left guillemet («) character.
+ARG defaults to 1."
+  (interactive "*p")
+  (dotimes (i arg)
+    (insert "«")))
+
+(defun insert-right-guillemet (arg)
+  "Insert the right guillemet (») character.
+ARG defaults to 1."
+  (interactive "*p")
+  (dotimes (i arg)
+    (insert "»")))
 
 (defun kill-to-line-beginning-position (&optional arg)
   "Kill region from beginning of line to point, similar to C-u in Bash and Nano.
 ARG defaults to 1."
-  (interactive "p")
-  (dotimes (i (cond (arg arg) 1))
-    (kill-region (line-beginning-position) (point))))
+  (interactive)
+  (kill-region (line-beginning-position) (point)))
 
 (defun move-line-up (arg)
   "Drag current line to previous line, keeping point on current line.
@@ -224,6 +237,8 @@ With argument ARG, takes current line and moves it past ARG lines."
 (global-set-key (kbd "M-<down>") 'move-line-down)
 (global-set-key (kbd "M-p") 'move-line-up)
 (global-set-key (kbd "M-n") 'move-line-down)
+(global-set-key (kbd "C-<") 'insert-left-guillemet)
+(global-set-key (kbd "C->") 'insert-right-guillemet)
 
 (provide 'init.el)
 ;;; init.el ends here
